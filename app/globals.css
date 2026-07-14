@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* Self-hosted Manrope, full weight range — no external font CDN calls. */
+@import "@fontsource/manrope/200.css";
+@import "@fontsource/manrope/300.css";
+@import "@fontsource/manrope/400.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "@fontsource/manrope/800.css";
+
+/* ─────────────────────────────────────────────────────────
+   Design tokens — sourced from the product packaging itself.
+   Two label variants exist in the packaging: a pale blush
+   pack (Creatine) and a deeper muted-rose pack (L-Glutamine).
+   Both live in this single palette so any product can lean
+   toward either end without introducing a new hue.
+───────────────────────────────────────────────────────── */
+@theme {
+  /* Blush — pale end of the packaging palette */
+  --color-blush-50:   #FDF7F5;
+  --color-blush-100:  #FAEBE8;
+  --color-blush-200:  #F5D9D7;
+  --color-blush-300:  #EFC5C3;
+
+  /* Rose — mid packaging tones */
+  --color-rose-300:   #E3B2B4;
+  --color-rose-400:   #CE8B93;
+  --color-rose-500:   #B76F7C;
+
+  /* Mauve — the deeper L-Glutamine pack background */
+  --color-mauve-500:  #A9677A;
+  --color-mauve-600:  #93556A;
+
+  /* Burgundy — the deep accent/wordmark color off the label */
+  --color-burgundy-500: #9B4F5B;
+  --color-burgundy-600: #7E3F4B;
+  --color-burgundy-700: #5F313B;
+
+  /* Neutrals — warm cream through charcoal */
+  --color-cream:      #FBF6F3;
+  --color-paper:      #F7EFEB;
+  --color-sand:       #EFE3DC;
+  --color-stone:      #8C7F79;
+  --color-charcoal:   #241E1C;
+  --color-ink:        #1A1513;
+  --color-line:       #E7DAD4;
+  --color-cloud:      #FFFFFF;
+
+  --font-sans: "Manrope", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgba(36,30,28,0.04), 0 10px 30px -12px rgba(36,30,28,0.10);
+  --shadow-lift: 0 6px 16px rgba(36,30,28,0.06), 0 30px 60px -20px rgba(36,30,28,0.18);
+  --shadow-glow: 0 0 0 1px rgba(155,79,91,0.10), 0 20px 50px -14px rgba(155,79,91,0.28);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Everything below stays inside @layer so it never overrides Tailwind's
+   own utility layer (see project notes — unlayered CSS beats layered CSS
+   regardless of specificity, which previously caused a sitewide bug). */
+@layer base {
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-cream);
+    color: var(--color-charcoal);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+    font-weight: 400;
+  }
+
+  ::selection { background: var(--color-burgundy-500); color: white; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-burgundy-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button, a { -webkit-touch-callout: none; }
+
+  @media (pointer: coarse) {
+    button, a[role="button"] { min-height: 44px; }
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--color-sand); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-stone); }
+}
+
+@layer components {
+  .transition-all, .transition-colors, .transition-opacity, .transition-transform, .transition-shadow {
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Frosted glass panel — used for floating cards over imagery/ribbons */
+  .glass {
+    background: color-mix(in srgb, white 55%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid color-mix(in srgb, white 60%, transparent);
+  }
+  .glass-dark {
+    background: color-mix(in srgb, var(--color-burgundy-700) 35%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid color-mix(in srgb, white 18%, transparent);
+  }
+
+  /* Oversized faint section numerals */
+  .section-number {
+    font-weight: 200;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-burgundy-500) 30%, transparent);
+  }
+
+  /* Thin premium divider */
+  .hairline { height: 1px; background: linear-gradient(90deg, transparent, var(--color-line) 15%, var(--color-line) 85%, transparent); }
+
+  /* Subtle grain used sparingly to keep flat pink fields from looking sterile */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+  }
+
+  .float-slow { animation: float-slow 7s var(--ease-out-soft) infinite; }
+  .float-slower { animation: float-slow 10s var(--ease-out-soft) infinite; animation-delay: -3s; }
+  .drift { animation: drift 22s linear infinite; }
+  .ping-soft { animation: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+  /* Styling for raw Shopify-authored HTML (product descriptions, policies) */
+  .prose-section :where(p) { margin-bottom: 1em; }
+  .prose-section :where(ul) { margin-bottom: 1em; padding-left: 1.25em; }
+  .prose-section :where(li) { list-style: disc; margin-bottom: 0.5em; }
+  .prose-section :where(a) { color: var(--color-burgundy-600); text-decoration: underline; text-underline-offset: 2px; }
+  .prose-section :where(strong, b) { font-weight: 600; color: var(--color-charcoal); }
+  .prose-section :where(h3, h4) { font-weight: 500; color: var(--color-charcoal); margin-top: 1.5em; margin-bottom: 0.5em; }
+  .prose-section :where(img) { border-radius: 1rem; margin: 1em 0; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+
+@keyframes drift {
+  0% { transform: translate3d(0,0,0) rotate(0deg); }
+  50% { transform: translate3d(2%, -2%, 0) rotate(2deg); }
+  100% { transform: translate3d(0,0,0) rotate(0deg); }
+}
+
+@keyframes ping-soft { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
