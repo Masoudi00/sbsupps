@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getShopPolicies, ShopPolicy } from "@/lib/shopify";
+import { getShopPolicies, getAllProducts, getPage, ShopPolicy } from "@/lib/shopify";
 import Footer from "@/components/Footer";
 import Ribbon from "@/components/ui/Ribbon";
 
@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 
 export default async function PolicyPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
-  const policies = await getShopPolicies();
+  const [policies, products, faqPage] = await Promise.all([getShopPolicies(), getAllProducts(), getPage("faq")]);
 
   const policy = [
     policies.privacyPolicy,
@@ -47,7 +47,7 @@ export default async function PolicyPage({ params }: { params: Promise<{ handle:
         </div>
       </section>
 
-      <Footer />
+      <Footer products={products} policies={policies} faqPage={faqPage} />
     </main>
   );
 }
