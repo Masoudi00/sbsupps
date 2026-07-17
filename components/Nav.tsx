@@ -44,7 +44,7 @@ export default function Nav() {
           <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
             <Logo size={26} />
             <span className="font-semibold text-[17px] text-charcoal tracking-[-0.01em]">
-              SD<span className="font-light text-stone"> Supplements</span>
+              SB<span className="font-light text-stone"> Supplements</span>
             </span>
           </Link>
 
@@ -109,7 +109,7 @@ export default function Nav() {
               className="fixed inset-y-0 right-0 z-50 w-[85vw] max-w-80 bg-cream shadow-lift flex flex-col"
             >
               <div className="flex justify-between items-center p-6 border-b border-line">
-                <span className="font-semibold text-charcoal">SD Supplements</span>
+                <span className="font-semibold text-charcoal">SB Supplements</span>
                 <button
                   onClick={() => setMobileOpen(false)}
                   className="p-1.5 rounded-full hover:bg-black/[0.04] transition-colors"

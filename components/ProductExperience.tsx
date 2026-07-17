@@ -45,7 +45,7 @@ export default function ProductExperience({
   const { dispatch } = useStore();
 
   const isLight = content.tone === "light";
-  const name = product?.title ?? "SD Supplements";
+  const name = product?.title ?? "SB Supplements";
   const description =
     product?.description ||
     "One active ingredient, dosed precisely and tested independently — nothing else in the formula.";

@@ -93,7 +93,7 @@ export function getProductContent(handle: string, product?: ShopifyProduct | nul
   const curated = HAND_WRITTEN[handle];
   if (curated) return { handle, ...curated };
 
-  const title = product?.title ?? "SD Supplements";
+  const title = product?.title ?? "SB Supplements";
   const [heroLine1, heroLine2] = autoHeroLines(title);
   const isBundle = /bundle|stack|kit|combo/i.test(title);
 
@@ -116,7 +116,7 @@ export function getProductContent(handle: string, product?: ShopifyProduct | nul
       title: isBundle ? "Why stack these together" : "What's inside",
       body:
         product?.description?.slice(0, 220) ||
-        "Every SDproduct follows the same rule: one job, done precisely, with nothing extra added to hide behind.",
+        "Every SB product follows the same rule: one job, done precisely, with nothing extra added to hide behind.",
     },
   };
 }

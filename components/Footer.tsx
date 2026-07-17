@@ -30,7 +30,7 @@ export default function Footer({
           <div>
             <div className="flex items-center gap-2.5 mb-5">
               <Logo size={24} tone="cream" />
-              <span className="font-semibold text-cream text-[15px] tracking-[-0.01em]">SD Supplements</span>
+              <span className="font-semibold text-cream text-[15px] tracking-[-0.01em]">SB Supplements</span>
             </div>
             <p className="text-[13.5px] leading-relaxed max-w-56">
               Single-ingredient supplements, precisely dosed, third-party tested. Nothing else.
@@ -88,7 +88,7 @@ export default function Footer({
             intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use if
             pregnant, nursing, under 18, or have a medical condition.
           </p>
-          <p className="text-[11.5px] text-cream/50">© 2026 SD Supplements · All rights reserved</p>
+          <p className="text-[11.5px] text-cream/50">© 2026 SB Supplements · All rights reserved</p>
         </div>
       </div>
     </footer>

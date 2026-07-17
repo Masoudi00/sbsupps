@@ -56,7 +56,7 @@ export default function Home({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Eyebrow>SD Supplements · Health</Eyebrow>
+            <Eyebrow>SB Supplements · Health</Eyebrow>
             <h1 className="font-light text-[3rem] sm:text-[5rem] lg:text-[6.2rem] leading-[0.96] tracking-[-0.03em] text-charcoal max-w-4xl">
               Fewer ingredients.<br />
               <span className="font-semibold italic">Better science.</span>
@@ -228,7 +228,7 @@ export default function Home({
                 One ingredient.<br /><span className="font-semibold italic">One job.</span>
               </h2>
               <p className="mt-6 text-[16px] text-stone leading-relaxed max-w-lg font-light">
-                No proprietary blends to hide behind. Every SDproduct lists exactly what&apos;s inside, at exactly the
+                No proprietary blends to hide behind. Every SB product lists exactly what&apos;s inside, at exactly the
                 dose studied — sourced, milled, and tested to a standard most commodity supplements never reach.
               </p>
             </div>

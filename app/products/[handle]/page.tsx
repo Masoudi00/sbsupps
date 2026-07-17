@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   const product = await getProduct(handle);
   if (!product) return {};
   return {
-    title: `${product.title} — SD Supplements`,
+    title: `${product.title} — SB Supplements`,
     description: product.description?.slice(0, 160),
   };
 }

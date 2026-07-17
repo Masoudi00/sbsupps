@@ -9,8 +9,8 @@ import Ribbon from "@/components/ui/Ribbon";
 import { Eyebrow, FadeUp } from "@/components/ui/Motion";
 
 export const metadata = {
-  title: "All Products — SD Supplements",
-  description: "Every SD Supplements product, synced live from our store.",
+  title: "All Products — SB Supplements",
+  description: "Every SB Supplements product, synced live from our store.",
 };
 
 export default async function ProductsIndexPage() {
@@ -25,7 +25,7 @@ export default async function ProductsIndexPage() {
       <section className="relative overflow-hidden bg-blush-50">
         <Ribbon tone="blush" className="absolute -top-24 -right-40 w-[30rem] h-[30rem] opacity-50 pointer-events-none" />
         <div className="relative mx-auto max-w-6xl px-6 sm:px-8 pt-16 pb-16 sm:pt-20 sm:pb-20">
-          <Eyebrow>SD Supplements</Eyebrow>
+          <Eyebrow>SB Supplements</Eyebrow>
           <h1 className="font-light text-4xl sm:text-6xl text-charcoal tracking-[-0.02em]">
             All products.<br /><span className="font-semibold italic">One standard.</span>
           </h1>

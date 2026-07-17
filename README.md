@@ -1,6 +1,6 @@
-# SD Supplements — Storefront
+# SB Supplements — Storefront
 
-Next.js 16 + Tailwind v4 headless Shopify storefront for SD Supplements
+Next.js 16 + Tailwind v4 headless Shopify storefront for SB Supplements
 (Creatine Monohydrate, L-Glutamine — more products can be added the same way).
 
 ## Design system

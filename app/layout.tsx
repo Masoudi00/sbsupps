@@ -5,7 +5,7 @@ import Nav from "@/components/Nav";
 import CartDrawer from "@/components/CartDrawer";
 
 export const metadata: Metadata = {
-  title: "SD Supplements — Creatine Monohydrate & L-Glutamine",
+  title: "SB Supplements — Creatine Monohydrate & L-Glutamine",
   description:
     "Single-ingredient supplements, precisely dosed and third-party tested. Micronized Creatine Monohydrate and pure L-Glutamine Powder — nothing else.",
   keywords: "creatine monohydrate, l-glutamine, supplements, micronized creatine, pure amino acids",
