@@ -3,9 +3,15 @@ import "./globals.css";
 import { StoreProvider } from "@/lib/store";
 import Nav from "@/components/Nav";
 import CartDrawer from "@/components/CartDrawer";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://www.sbsupplements.com");
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "SB Supplements — Creatine Monohydrate & L-Glutamine",
   description:
     "Single-ingredient supplements, precisely dosed and third-party tested. Micronized Creatine Monohydrate and pure L-Glutamine Powder — nothing else.",
