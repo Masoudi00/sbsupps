@@ -7,10 +7,19 @@ import { getProductContent } from "@/lib/products";
 import Footer from "@/components/Footer";
 import Ribbon from "@/components/ui/Ribbon";
 import { Eyebrow, FadeUp } from "@/components/ui/Motion";
+import { JsonLd, collectionPageSchema, breadcrumbSchema } from "@/lib/seo";
 
 export const metadata = {
-  title: "All Products — SB Supplements",
-  description: "Every SB Supplements product, synced live from our store.",
+  title: "All Products",
+  description:
+    "Shop every SB Supplements product — single-ingredient, precisely dosed, third-party tested supplements. Synced live from our store.",
+  alternates: { canonical: "/products" },
+  openGraph: {
+    type: "website",
+    title: "All Products — SB Supplements",
+    description: "Shop every SB Supplements product — single-ingredient, precisely dosed, third-party tested supplements.",
+    url: "/products",
+  },
 };
 
 export default async function ProductsIndexPage() {
@@ -22,6 +31,12 @@ export default async function ProductsIndexPage() {
 
   return (
     <main>
+      {products.length > 0 && (
+        <>
+          <JsonLd data={collectionPageSchema({ name: "All Products", path: "/products", products })} />
+          <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products" }])} />
+        </>
+      )}
       <section className="relative overflow-hidden bg-blush-50">
         <Ribbon tone="blush" className="absolute -top-24 -right-40 w-[30rem] h-[30rem] opacity-50 pointer-events-none" />
         <div className="relative mx-auto max-w-6xl px-6 sm:px-8 pt-16 pb-16 sm:pt-20 sm:pb-20">

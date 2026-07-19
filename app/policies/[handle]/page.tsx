@@ -4,12 +4,37 @@ import { ArrowLeft } from "lucide-react";
 import { getShopPolicies, getAllProducts, getPage, ShopPolicy } from "@/lib/shopify";
 import Footer from "@/components/Footer";
 import Ribbon from "@/components/ui/Ribbon";
+import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const policies = await getShopPolicies();
   return Object.values(policies)
     .filter((p): p is NonNullable<ShopPolicy> => Boolean(p && typeof p === "object" && "handle" in p))
     .map((p) => ({ handle: p.handle }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params;
+  const policies = await getShopPolicies();
+  const policy = [
+    policies.privacyPolicy,
+    policies.refundPolicy,
+    policies.shippingPolicy,
+    policies.termsOfService,
+    policies.subscriptionPolicy,
+  ].find((p) => p?.handle === handle);
+
+  if (!policy) return {};
+
+  return {
+    title: policy.title,
+    description: `${policy.title} for SB Supplements.`,
+    alternates: { canonical: `/policies/${handle}` },
+    // Legal/policy boilerplate isn't content worth ranking for and can read
+    // as thin/duplicate content to search engines — keep it out of the
+    // index while still linking it normally from the footer.
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function PolicyPage({ params }: { params: Promise<{ handle: string }> }) {
@@ -28,6 +53,7 @@ export default async function PolicyPage({ params }: { params: Promise<{ handle:
 
   return (
     <main>
+      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: policy.title, path: `/policies/${handle}` }])} />
       <section className="relative overflow-hidden bg-blush-50">
         <Ribbon tone="blush" className="absolute -top-24 -right-40 w-[28rem] h-[28rem] opacity-50" />
         <div className="relative mx-auto max-w-3xl px-6 sm:px-8 pt-16 pb-20">

@@ -16,7 +16,10 @@ export type ProductContent = {
   suggestedUse: string;
   servingSize?: string;
   servingsPerContainer?: number;
-  amountPerServing?: string;
+  /** A product can have more than one active ingredient (e.g. creatine +
+   *  electrolytes) — this is a list, not a single string, so real supplement
+   *  facts never get silently truncated to fit a single-ingredient shape. */
+  activeIngredients?: { name: string; amount: string }[];
   netWt?: string;
   otherIngredients?: string;
   standard: { title: string; body: string }[];
@@ -24,28 +27,37 @@ export type ProductContent = {
 };
 
 const HAND_WRITTEN: Record<string, Omit<ProductContent, "handle">> = {
-  "creatine-monohydrate": {
+  // Real Shopify handle is "creatine-hydration-powder" (title: "Creatine
+  // Hydration Powder") — NOT "creatine-monohydrate". Facts below are taken
+  // directly from the live product page's supplement facts panel.
+  "creatine-hydration-powder": {
     tone: "light",
-    tagline: "Micronized. Unflavored. Precisely dosed.",
-    heroLine1: "Output,",
-    heroLine2: "measured.",
-    servingSize: "1 Scoop (5.6g)",
-    servingsPerContainer: 50,
-    amountPerServing: "Creatine Monohydrate — 5,000mg",
-    netWt: "9.9oz (281g)",
-    tags: ["Unflavored", "Micronized", "Premium Quality"],
-    labelBadges: ["Pure", "Strength", "Energy"],
+    tagline: "Creatine + electrolytes. Precisely dosed.",
+    heroLine1: "Power,",
+    heroLine2: "hydrated.",
+    servingSize: "1 Scoop (10g)",
+    servingsPerContainer: 30,
+    activeIngredients: [
+      { name: "Creatine (as Creatine Monohydrate)", amount: "5,000 mg" },
+      { name: "Magnesium (as Magnesium Malate)", amount: "60 mg" },
+      { name: "Sodium (as Sea Salt)", amount: "1,000 mg" },
+      { name: "Potassium (as Potassium Chloride)", amount: "200 mg" },
+    ],
+    otherIngredients: "Natural Flavors, Stevia Extract (Leaf), Silicon Dioxide",
+    netWt: "10.6oz (300g)",
+    tags: ["Lemon Flavor", "Electrolyte Blend", "Premium Quality"],
+    labelBadges: ["Pure", "Hydration", "Energy"],
     suggestedUse:
-      "Mix one (1) scoop with 8oz (237ml) of water or juice. Take 1 to 4 times daily for the first 5 days (loading phase), then take 1–2 times daily thereafter, or as directed by a healthcare professional.",
+      "As a dietary supplement, adults mix one (1) scoop (10g) with 6–8oz (177–237ml) of water or favorite beverage daily.",
     standard: [
-      { title: "Micronized", body: "Milled to a finer particle size for smoother mixing and faster suspension in liquid." },
+      { title: "Sourced", body: "Raw compounds selected for purity before a single batch is manufactured." },
       { title: "Third-party tested", body: "Every batch is verified by an independent lab for purity and label accuracy." },
-      { title: "Unflavored", body: "No sweeteners, no dyes, no fillers — stack it into anything you're already drinking." },
+      { title: "Precisely dosed", body: "Exactly what the label says — no underfilled scoops, no rounding down." },
       { title: "Made in the USA", body: "Manufactured in a GMP-certified facility under strict quality controls." },
     ],
     activeCompound: {
-      title: "Why creatine monohydrate",
-      body: "Creatine is one of the most researched compounds in sports nutrition. It supports the rapid regeneration of ATP — the cell's primary energy currency — which is why it's associated with gains in strength, power output, and lean body mass over time.",
+      title: "Why creatine + electrolytes",
+      body: "Creatine supports the rapid regeneration of ATP — the cell's primary energy currency — for strength and power output. Magnesium, sodium, and potassium round out the formula to help maintain hydration and normal muscle function during training, so one scoop covers both energy and fluid balance.",
     },
   },
   "l-glutamine": {
@@ -55,7 +67,7 @@ const HAND_WRITTEN: Record<string, Omit<ProductContent, "handle">> = {
     heroLine2: "refined.",
     servingSize: "1 Scoop (3.3g)",
     servingsPerContainer: 30,
-    amountPerServing: "L-Glutamine Powder — 3.15g",
+    activeIngredients: [{ name: "L-Glutamine Powder", amount: "3.15g" }],
     netWt: "3.46oz (98g)",
     tags: ["Unflavored", "Pure", "Premium Grade"],
     labelBadges: ["Pure", "Unflavored", "Premium Grade"],

@@ -8,13 +8,15 @@ import { useStore } from "@/lib/store";
 import { ShopifyProduct, ShopPolicies } from "@/lib/shopify";
 import { Bundle } from "@/lib/bundles";
 import { ProductContent } from "@/lib/products";
-import { parseDescriptionSections } from "@/lib/parseDescription";
+import { parseDescriptionSections, extractBadgeGrid } from "@/lib/parseDescription";
+import { GENERIC_PRODUCT_FAQ } from "@/lib/faq";
 import { Stars, FadeUp, Eyebrow } from "@/components/ui/Motion";
 import Button from "@/components/ui/Button";
 import Ribbon from "@/components/ui/Ribbon";
 import Footer from "@/components/Footer";
 import ProductGallery from "@/components/ProductGallery";
 import DescriptionSections, { Section } from "@/components/product/DescriptionSections";
+import BadgeGrid from "@/components/product/BadgeGrid";
 
 const REVIEW_TEMPLATES = [
   { name: "Jordan P.", text: "No taste, no grit, fully dissolved. First supplement I've taken where I genuinely forget I'm taking anything.", stars: 5, date: "June 2026" },
@@ -49,7 +51,7 @@ export default function ProductExperience({
   const description =
     product?.description ||
     "One active ingredient, dosed precisely and tested independently — nothing else in the formula.";
-  const hasSupplementFacts = Boolean(content.servingSize || content.amountPerServing);
+  const hasSupplementFacts = Boolean(content.servingSize || (content.activeIngredients && content.activeIngredients.length > 0));
 
   // If the selected bundle maps to a real Shopify variant with its own image
   // (e.g. a flavor variant), the gallery resets to that image — remounted via
@@ -92,10 +94,16 @@ export default function ProductExperience({
     // 1. Overview — parsed straight from the real Shopify description.
     const parsed = parseDescriptionSections(product?.descriptionHtml);
     parsed.forEach((s, i) => {
+      const { badges, html: cleanedHtml } = extractBadgeGrid(s.html);
       list.push({
         id: `overview-${i}`,
         heading: s.heading,
-        content: <div dangerouslySetInnerHTML={{ __html: s.html }} />,
+        content: (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: cleanedHtml }} />
+            <BadgeGrid badges={badges} />
+          </>
+        ),
       });
     });
 
@@ -148,10 +156,16 @@ export default function ProductExperience({
                 <dd className="font-medium text-charcoal">{content.servingsPerContainer}</dd>
               </div>
             )}
-            {content.amountPerServing && (
-              <div className="flex justify-between py-2.5">
-                <dt className="font-medium text-charcoal">{content.amountPerServing}</dt>
-              </div>
+            {content.activeIngredients && content.activeIngredients.length > 0 && (
+              <>
+                <div className="hairline my-1" />
+                {content.activeIngredients.map((ing) => (
+                  <div key={ing.name} className="flex justify-between py-2.5 gap-4">
+                    <dt className="font-medium text-charcoal">{ing.name}</dt>
+                    <dd className="font-medium text-charcoal text-right flex-shrink-0">{ing.amount}</dd>
+                  </div>
+                ))}
+              </>
             )}
             {content.otherIngredients && (
               <div className="py-2.5 text-[13.5px]">Other Ingredients: {content.otherIngredients}</div>
@@ -183,18 +197,12 @@ export default function ProductExperience({
         <div dangerouslySetInnerHTML={{ __html: faqPage.body }} />
       ) : (
         <div className="space-y-5">
-          <div>
-            <p className="font-medium text-charcoal mb-1">How long until I notice results?</p>
-            <p className="text-[14.5px] text-charcoal/70">Most people notice a difference within 2–4 weeks of consistent daily use.</p>
-          </div>
-          <div>
-            <p className="font-medium text-charcoal mb-1">Can I take this with other supplements?</p>
-            <p className="text-[14.5px] text-charcoal/70">Yes — it&apos;s a single-ingredient formula, so it stacks cleanly with most other supplements. Check with your doctor if you&apos;re unsure.</p>
-          </div>
-          <div>
-            <p className="font-medium text-charcoal mb-1">What if it&apos;s not right for me?</p>
-            <p className="text-[14.5px] text-charcoal/70">We offer a 30-day money-back guarantee — no forms, just email us.</p>
-          </div>
+          {GENERIC_PRODUCT_FAQ.map((item) => (
+            <div key={item.question}>
+              <p className="font-medium text-charcoal mb-1">{item.question}</p>
+              <p className="text-[14.5px] text-charcoal/70">{item.answer}</p>
+            </div>
+          ))}
         </div>
       ),
     });
