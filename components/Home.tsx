@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { ArrowRight, ArrowUpRight, ShieldCheck, FlaskConical, Leaf, Factory } from "lucide-react";
 import { ShopifyProduct, ShopPolicies } from "@/lib/shopify";
 import { Bundle } from "@/lib/bundles";
@@ -11,6 +12,7 @@ import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { FadeUp, Eyebrow, SectionNumber, Stars, CountUp } from "@/components/ui/Motion";
 import Footer from "@/components/Footer";
+
 
 type Entry = { content: ProductContent; product: ShopifyProduct; bundles: Bundle[] };
 type FaqPage = { title: string; handle: string } | null;
@@ -34,14 +36,33 @@ export default function Home({
   policies,
   faqPage,
   shopifyConfigured,
+  reviews,
 }: {
   productsWithBundles: Entry[];
   products: ShopifyProduct[];
   policies: ShopPolicies;
   faqPage: FaqPage;
   shopifyConfigured: boolean;
+  reviews: any;
 }) {
   const firstProduct = productsWithBundles[0];
+  const average =
+    reviews.reviews.reduce(
+      (sum: number, r: any) => sum + r.rating,
+      0
+    ) / reviews.reviews.length;
+
+
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
+  const sortedReviews = [...reviews.reviews].sort((a: any, b: any) => {
+    if (b.rating !== a.rating) return b.rating - a.rating;
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
+
+  const visibleReviews = showAllReviews
+    ? sortedReviews
+    : sortedReviews.slice(0, 3);
 
   return (
     <main>
@@ -292,29 +313,100 @@ export default function Home({
       </section>
 
       {/* ══════════════════════════ REVIEWS ══════════════════════════ */}
-      <section id="reviews" className="py-24 sm:py-32">
-        <div className="mx-auto max-w-6xl px-6 sm:px-8">
-          <FadeUp className="text-center mb-16">
-            <Eyebrow>Reviews</Eyebrow>
-            <h2 className="font-light text-4xl sm:text-5xl text-charcoal tracking-[-0.02em]">
-              What people <span className="font-semibold italic">notice first.</span>
-            </h2>
-          </FadeUp>
+{/* ══════════════════════════ REVIEWS ══════════════════════════ */}
+<section id="reviews" className="py-24 sm:py-32 bg-blush-50">
+  <div className="mx-auto max-w-6xl px-6 sm:px-8">
+    <FadeUp className="text-center mb-14">
+      <Eyebrow>Reviews</Eyebrow>
 
-          <div className="grid sm:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t, i) => (
-              <FadeUp key={t.name} delay={i * 0.1}>
-                <div className="flex flex-col gap-5 h-full">
-                  <Stars n={t.stars} size={14} />
-                  <p className="text-[16px] text-charcoal leading-relaxed font-light flex-1">&ldquo;{t.text}&rdquo;</p>
-                  <p className="text-[13px] font-medium text-stone">{t.name}</p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
+      <h2 className="font-light text-4xl sm:text-5xl text-charcoal tracking-[-0.02em]">
+        What people <span className="font-semibold italic">notice first.</span>
+      </h2>
 
+      <div className="mt-8 flex items-center justify-center gap-3">
+        <Stars n={Math.round(average)} size={18} />
+
+        <span className="text-2xl font-semibold text-charcoal">
+          {average.toFixed(1)}
+        </span>
+
+        <span className="text-stone text-sm">
+          ({reviews.reviews.length} reviews)
+        </span>
+      </div>
+    </FadeUp>
+
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {visibleReviews.map((review: any, i: number) => (
+        <FadeUp key={review.id} delay={i * 0.08}>
+          <article className="flex h-full flex-col rounded-3xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div className="mb-5 flex items-center justify-between">
+              <Stars n={review.rating} size={15} />
+
+              <span className="text-xs text-stone">
+                {new Date(review.created_at).toLocaleDateString("en-US", {
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+
+            <h3 className="mb-3 text-lg font-semibold text-charcoal">
+              {review.title}
+            </h3>
+
+            <p className="flex-1 text-[15px] leading-7 text-stone">
+              {review.body}
+            </p>
+
+            <div className="mt-8 flex items-center justify-between border-t border-line pt-5">
+              <div>
+                <p className="font-medium text-charcoal">
+                  {review.reviewer.name}
+                </p>
+
+                <p className="text-xs text-stone">
+                  Customer Review
+                </p>
+              </div>
+
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-charcoal text-sm font-semibold text-white">
+                {review.reviewer.name.charAt(0).toUpperCase()}
+              </div>
+            </div>
+          </article>
+        </FadeUp>
+      ))}
+    </div>
+
+    {reviews.reviews.length > 3 && (
+      <FadeUp className="mt-12 flex justify-center">
+        <button
+          onClick={() => setShowAllReviews(!showAllReviews)}
+          className="group inline-flex items-center gap-2 rounded-full border border-charcoal px-6 py-3 text-sm font-medium text-charcoal transition-all duration-300 hover:bg-charcoal hover:text-white"
+        >
+          {showAllReviews ? "Show Less" : "Show More Reviews"}
+
+          <svg
+            className={`h-4 w-4 transition-transform duration-300 ${
+              showAllReviews ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </FadeUp>
+    )}
+  </div>
+</section>
       {/* ══════════════════════════ CTA ══════════════════════════ */}
       <section className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-6xl px-6 sm:px-8">

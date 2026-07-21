@@ -30,7 +30,7 @@ export function organizationSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl("/logo.svg"),
-    email: "support@sbsupplements.com",
+    email: "support@sbsupps.store",
   };
 }
 
@@ -68,8 +68,8 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
  *
  * Deliberately omits `review`/`aggregateRating`: the testimonials currently
  * shown on product pages are placeholder copy, not verified customer
- * reviews. Marking them up as schema would violate Google's structured
- * data policies (and Merchant Center's) and is genuinely misleading. Once
+ * reviews. Marking them up as  would violate Google's structured
+ * data policies (and Merchant Centschemaer's) and is genuinely misleading. Once
  * a real reviews platform (Judge.me, Loox, Shopify Product Reviews, etc.)
  * is connected, pull real aggregate rating/review data from it here.
  */

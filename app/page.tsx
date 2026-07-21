@@ -1,6 +1,7 @@
 import { getAllProducts, getShopPolicies, getPage, isShopifyConfigured } from "@/lib/shopify";
 import { getBundles } from "@/lib/bundles";
 import { getProductContent } from "@/lib/products";
+import { getProductReviews } from "@/lib/judgeme";
 import Home from "@/components/Home";
 
 export const metadata = {
@@ -11,13 +12,20 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const [products, policies, faqPage] = await Promise.all([getAllProducts(), getShopPolicies(), getPage("faq")]);
+  const [products, policies, faqPage] = await Promise.all([
+    getAllProducts(),
+    getShopPolicies(),
+    getPage("faq"),
+  ]);
 
   const productsWithBundles = products.map((product) => ({
     content: getProductContent(product.handle, product),
     product,
     bundles: getBundles(product),
   }));
+
+  // Reviews for your Creatine product
+  const reviews = await getProductReviews(10213071225130);
 
   return (
     <Home
@@ -26,6 +34,7 @@ export default async function Page() {
       policies={policies}
       faqPage={faqPage}
       shopifyConfigured={isShopifyConfigured}
+      reviews={reviews}
     />
   );
 }

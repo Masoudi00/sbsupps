@@ -65,7 +65,7 @@ export default function Footer({
                 </li>
               )}
               <li>
-                <a href="mailto:support@sbsupplements.com" className="text-[13.5px] hover:text-cream transition-colors duration-300">
+                <a href="mailto:support@sbsupps.store" className="text-[13.5px] hover:text-cream transition-colors duration-300">
                   Contact Us
                 </a>
               </li>
