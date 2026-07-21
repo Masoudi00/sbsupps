@@ -46,12 +46,13 @@ export default function Home({
   reviews: any;
 }) {
   const firstProduct = productsWithBundles[0];
-  const average =
-    reviews.reviews.reduce(
-      (sum: number, r: any) => sum + r.rating,
-      0
-    ) / reviews.reviews.length;
-
+const average =
+  reviews.reviews.length > 0
+    ? reviews.reviews.reduce(
+        (sum: number, r: any) => sum + r.rating,
+        0
+      ) / reviews.reviews.length
+    : 0;
 
   const [showAllReviews, setShowAllReviews] = useState(false);
 
